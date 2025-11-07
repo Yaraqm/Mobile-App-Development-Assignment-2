@@ -8,7 +8,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+/**
+ * A utility class for common map operations.
+ */
 public class MapUtils {
+    /**
+     * Clears the map and shows a single marker.
+     */
     public static void showMarker(GoogleMap map, double lat, double lng, String title, String snippet) {
         LatLng point = new LatLng(lat, lng);
         map.clear();
@@ -16,11 +22,17 @@ public class MapUtils {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 12f));
     }
 
+    /**
+     * Adds a marker to the map without clearing it.
+     */
     public static void addMarker(GoogleMap map, double lat, double lng, String title, String snippet) {
         LatLng point = new LatLng(lat, lng);
         map.addMarker(new MarkerOptions().position(point).title(title).snippet(snippet));
     }
 
+    /**
+     * Focuses the camera on a list of markers.
+     */
     public static void focusOnAllMarkers(GoogleMap map, List<LatLng> points) {
         if (points == null || points.isEmpty()) {
             return;

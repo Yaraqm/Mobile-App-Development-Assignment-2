@@ -1,24 +1,26 @@
 <resources>
+    <!-- App-wide strings -->
     <string name="app_name">SpotFinder</string>
+
+    <!-- Button labels -->
     <string name="btn_add">Add Location</string>
     <string name="btn_search">Search Location</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_delete">Delete</string>
+    <string name="show_all_locations">Show All Locations</string>
+
+    <!-- Input hints -->
     <string name="hint_address">Enter address</string>
     <string name="hint_latitude">Enter latitude</string>
     <string name="hint_longitude">Enter longitude</string>
+
+    <!-- Toast messages -->
     <string name="added_success">Location added successfully!</string>
     <string name="no_result_found">No location found</string>
-
-    <string name="btn_update">Update</string>
-    <string name="btn_delete">Delete</string>
     <string name="fill_all_fields">Please fill all fields</string>
     <string name="error_insert">Error inserting data</string>
     <string name="deleted_success">Location deleted</string>
     <string name="updated_success">Location updated</string>
     <string name="enter_address">Enter an address</string>
-
     <string name="enter_name">Enter a location name</string>
-    <string name="show_all_locations">Show All Locations</string>
-
-
-
 </resources>

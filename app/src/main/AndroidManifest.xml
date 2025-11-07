@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The manifest file for the application. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions required by the application. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- The application element. -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,10 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- The Google Maps API key. -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCQqqZO0s7ySnSD19EvtBA32HhzypD6cyY"/>
 
+        <!-- The main activity of the application. -->
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

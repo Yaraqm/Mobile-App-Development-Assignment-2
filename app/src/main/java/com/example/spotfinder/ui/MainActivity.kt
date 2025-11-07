@@ -21,15 +21,27 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 
+/**
+ * The main activity of the application. It handles the user interface and interactions.
+ */
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    // View binding for the activity
     private lateinit var binding: ActivityMainBinding
+    // Database helper for location data
     private lateinit var dbHelper: LocationDBHelper
+    // Google Map instance
     private lateinit var map: GoogleMap
+    // Adapter for the location list
     private lateinit var adapter: LocationAdapter
+    // List of locations
     private var locationList = mutableListOf<LocationModel>()
+    // Flag to check if the user is updating a location
     private var isUpdate = false
 
+    /**
+     * Called when the activity is first created.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -52,7 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.rvLocations.layoutManager = LinearLayoutManager(this)
         binding.rvLocations.adapter = adapter
 
-        // Live search
+        // Live search listener
         binding.etLocationName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -68,7 +80,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // Search Button
+        // Search button listener
         binding.btnSearch.setOnClickListener {
             val name = binding.etLocationName.text.toString().trim()
             if (name.isEmpty()) {
@@ -78,7 +90,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             searchLocations(name)
         }
 
-        // Add Button
+        // Add button listener
         binding.btnAdd.setOnClickListener {
             val name = binding.etLocationName.text.toString().trim()
             if (name.isEmpty()) {
@@ -89,7 +101,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             showDetailsContainer(null)
         }
 
-        // Update Button
+        // Update button listener
         binding.btnUpdate.setOnClickListener {
             val name = binding.etLocationName.text.toString().trim()
             if (name.isEmpty()) {
@@ -114,7 +126,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             cursor.close()
         }
 
-        // Delete Button
+        // Delete button listener
         binding.btnDelete.setOnClickListener {
             val name = binding.etLocationName.text.toString().trim()
             val cursor = dbHelper.getLocationByName(name)
@@ -130,7 +142,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             cursor.close()
         }
 
-        // Show All Button
+        // Show all button listener
         binding.btnShowAll.setOnClickListener {
             map.clear()
             val latLngList = mutableListOf<LatLng>()
@@ -141,7 +153,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             MapUtils.focusOnAllMarkers(map, latLngList)
         }
 
-        // Save Button
+        // Save button listener
         binding.btnSave.setOnClickListener {
             val name = binding.etLocationName.text.toString().trim()
             val addr = binding.etAddress.text.toString().trim()
@@ -179,6 +191,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         refreshList()
     }
 
+    /**
+     * Called when the map is ready to be used.
+     */
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
@@ -186,6 +201,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(toronto, 9f))
     }
 
+    /**
+     * Refreshes the list of locations from the database.
+     */
     private fun refreshList() {
         locationList.clear()
         val cursor = dbHelper.getAllLocations()
@@ -204,25 +222,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         adapter.updateData(locationList)
     }
 
+    /**
+     * Searches for locations by name and displays them on the map.
+     */
     private fun searchLocations(query: String) {
         map.clear()
         val cursor = dbHelper.searchLocationsByName(query)
-        val latLngList = mutableListOf<LatLng>()
-        while (cursor.moveToNext()) {
+        if (cursor.moveToFirst()) {
             val lat = cursor.getDouble(cursor.getColumnIndexOrThrow(LocationDBHelper.COL_LAT))
             val lng = cursor.getDouble(cursor.getColumnIndexOrThrow(LocationDBHelper.COL_LNG))
             val name = cursor.getString(cursor.getColumnIndexOrThrow(LocationDBHelper.COL_LOCATION_NAME))
             val address = cursor.getString(cursor.getColumnIndexOrThrow(LocationDBHelper.COL_ADDRESS))
-            MapUtils.addMarker(map, lat, lng, name, "$address\nLat: $lat, Lng: $lng")
-            latLngList.add(LatLng(lat, lng))
+            MapUtils.showMarker(map, lat, lng, name, "$address\nLat: $lat, Lng: $lng")
+        } else {
+            Toast.makeText(this, R.string.no_result_found, Toast.LENGTH_SHORT).show()
         }
         cursor.close()
-        if (latLngList.isEmpty()) {
-           // No toast shown here for a smoother user experience
-        }
-        MapUtils.focusOnAllMarkers(map, latLngList)
     }
 
+    /**
+     * Clears all input fields.
+     */
     private fun clearInputs() {
         binding.etLocationName.text?.clear()
         binding.etAddress.text?.clear()
@@ -230,6 +250,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.etLongitude.text?.clear()
     }
 
+    /**
+     * Shows the details container for adding or updating a location.
+     */
     private fun showDetailsContainer(location: LocationModel?) {
         binding.detailsContainer.visibility = View.VISIBLE
         if (location != null) {

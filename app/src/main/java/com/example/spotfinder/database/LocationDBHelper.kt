@@ -6,9 +6,16 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
+/**
+ * A helper class to manage database creation and version management.
+ */
 class LocationDBHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
+    /**
+     * Called when the database is created for the first time. This is where the
+     * creation of tables and the initial population of the tables should happen.
+     */
     override fun onCreate(db: SQLiteDatabase) {
         val createTable = """
             CREATE TABLE $TABLE_NAME (
@@ -22,7 +29,6 @@ class LocationDBHelper(context: Context) :
         db.execSQL(createTable)
 
         // Preload GTA landmark data
-        // Preload GTA landmark data (100 entries)
         val locations = listOf(
             arrayOf("CN Tower", "290 Bremner Blvd, Toronto, ON", 43.6426, -79.3871),
             arrayOf("Ripley's Aquarium of Canada", "288 Bremner Blvd, Toronto, ON", 43.6424, -79.3859),
@@ -138,11 +144,17 @@ class LocationDBHelper(context: Context) :
         }
     }
 
+    /**
+     * Called when the database needs to be upgraded. This method will drop the old database and create a new one.
+     */
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
 
+    /**
+     * Inserts a new location into the database.
+     */
     fun insertLocation(locationName: String, address: String, lat: Double, lng: Double): Boolean {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -152,25 +164,36 @@ class LocationDBHelper(context: Context) :
             put(COL_LNG, lng)
         }
         val result = db.insert(TABLE_NAME, null, values)
-        db.close()
         return result != -1L
     }
 
+    /**
+     * Retrieves a location from the database by its name.
+     */
     fun getLocationByName(name: String): Cursor {
         val db = readableDatabase
         return db.rawQuery("SELECT * FROM $TABLE_NAME WHERE LOWER($COL_LOCATION_NAME) = LOWER(?)", arrayOf(name))
     }
 
+    /**
+     * Searches for locations in the database by name.
+     */
     fun searchLocationsByName(name: String): Cursor {
         val db = readableDatabase
-        return db.rawQuery("SELECT * FROM $TABLE_NAME WHERE LOWER($COL_LOCATION_NAME) LIKE LOWER(?)", arrayOf("$name%"))
+        return db.rawQuery("SELECT * FROM $TABLE_NAME WHERE LOWER($COL_LOCATION_NAME) LIKE LOWER(?)", arrayOf("%$name%"))
     }
 
+    /**
+     * Retrieves all locations from the database.
+     */
     fun getAllLocations(): Cursor {
         val db = readableDatabase
         return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
     }
 
+    /**
+     * Updates a location in the database.
+     */
     fun updateLocation(id: Int, locationName: String, address: String, lat: Double, lng: Double): Boolean {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -180,17 +203,21 @@ class LocationDBHelper(context: Context) :
             put(COL_LNG, lng)
         }
         val result = db.update(TABLE_NAME, values, "$COL_ID=?", arrayOf(id.toString()))
-        db.close()
         return result > 0
     }
 
+    /**
+     * Deletes a location from the database.
+     */
     fun deleteLocation(id: Int): Boolean {
         val db = writableDatabase
         val result = db.delete(TABLE_NAME, "$COL_ID=?", arrayOf(id.toString()))
-        db.close()
         return result > 0
     }
 
+    /**
+     * A companion object to hold the database constants.
+     */
     companion object {
         private const val DATABASE_NAME = "spotfinder.db"
         private const val DATABASE_VERSION = 5 // bumped version since schema changed

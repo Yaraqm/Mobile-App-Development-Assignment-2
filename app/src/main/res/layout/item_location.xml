@@ -1,3 +1,4 @@
+<!-- Layout for a single item in the location RecyclerView -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -6,6 +7,7 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true">
 
+    <!-- TextView for the location name -->
     <TextView
         android:id="@+id/tvLocationName"
         android:layout_width="wrap_content"
@@ -14,6 +16,7 @@
         android:textSize="16sp"
         android:textColor="@android:color/black" />
 
+    <!-- TextView for the location address -->
     <TextView
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
@@ -21,6 +24,7 @@
         android:textColor="#444"
         android:textSize="14sp" />
 
+    <!-- TextView for the location coordinates -->
     <TextView
         android:id="@+id/tvCoordinates"
         android:layout_width="wrap_content"

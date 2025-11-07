@@ -1,12 +1,17 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
+        <!-- Darker variant of the primary brand color. -->
         <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!-- Accent color for UI elements like buttons and progress bars. -->
         <item name="colorAccent">@color/accent</item>
+        <!-- Default background color for the app. -->
         <item name="android:windowBackground">@color/background</item>
+        <!-- Primary text color. -->
         <item name="android:textColorPrimary">@color/text_primary</item>
+        <!-- Secondary text color for less important text. -->
         <item name="android:textColorSecondary">@color/text_secondary</item>
     </style>
 </resources>

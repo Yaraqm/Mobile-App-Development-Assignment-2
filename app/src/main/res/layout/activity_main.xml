@@ -1,3 +1,4 @@
+<!-- Main layout for the application -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,6 +7,7 @@
     android:background="@color/background"
     tools:context=".ui.MainActivity">
 
+    <!-- App bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,6 +20,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Main content area with scrolling -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,6 +32,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Input field for location name -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -43,6 +47,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Container for location details -->
             <LinearLayout
                 android:id="@+id/detailsContainer"
                 android:layout_width="match_parent"
@@ -51,6 +56,7 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
+                <!-- Input field for address -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -65,11 +71,13 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Container for latitude and longitude fields -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <!-- Input field for latitude -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
@@ -86,6 +94,7 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Input field for longitude -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
@@ -102,6 +111,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
+                <!-- Button to save changes -->
                  <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSave"
                     android:layout_width="match_parent"
@@ -111,6 +121,7 @@
 
             </LinearLayout>
 
+            <!-- Grid of action buttons -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,6 +130,7 @@
                 android:layout_marginTop="16dp"
                 >
 
+                <!-- Button to search for a location -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSearch"
                     android:layout_width="0dp"
@@ -127,6 +139,7 @@
                     android:layout_marginEnd="8dp"
                     android:text="@string/btn_search" />
 
+                <!-- Button to show all locations -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnShowAll"
                      android:layout_width="0dp"
@@ -134,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/show_all_locations" />
 
+                <!-- Button to add a new location -->
                  <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAdd"
                     android:layout_width="0dp"
@@ -143,6 +157,7 @@
                     android:layout_marginEnd="8dp"
                     android:text="@string/btn_add" />
 
+                <!-- Button to update a location -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUpdate"
                     android:layout_width="0dp"
@@ -151,6 +166,7 @@
                     android:layout_columnWeight="1"
                     android:text="@string/btn_update" />
 
+                <!-- Button to delete a location -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDelete"
                     android:backgroundTint="@color/delete_red"
@@ -163,6 +179,7 @@
 
             </GridLayout>
 
+            <!-- Card containing the RecyclerView of locations -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,6 +194,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Google Map fragment -->
             <fragment
                 android:id="@+id/mapFragment"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
